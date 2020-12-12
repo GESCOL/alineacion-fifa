@@ -1,3 +1,5 @@
+import random
+import time
 import queue
 import math
 from formaciones import *
@@ -327,6 +329,9 @@ class Generador():
 
 
 if __name__ == "__main__":
+
+  start = time.time()
+
   jugadores = Archivador.read_jugadores()
   formaciones = get_formaciones()
   
@@ -334,10 +339,30 @@ if __name__ == "__main__":
   
   formacion = Generador.get_mejor_formacion(formaciones, jugadores_ordenados)
 
-  lista_formacion = Generador.get_mejor_alineacion(formacion, Generador.get_cola_ordenada(jugadores))
+  lista_mejor_formacion = Generador.get_mejor_alineacion(formacion, Generador.get_cola_ordenada(jugadores))
   
-  
-  for i in lista_formacion:
+  print("Tiempo total: ", time.time() - start)
+  print("MEJOR FORMACIÓN:")
+  print("Codigo formación", hex(id(lista_mejor_formacion)))
+  for i in lista_mejor_formacion:
     for j in i:
-      print(j.numero)
+      print(j.numero, end="  ")
     print()
+
+'''
+#PRUEBAS PARA VER QUE NUESTRA ALINEACIÓN ES LA MEJOR
+  alineaciones_random = []
+  for i in range(10):    
+    for i in range(len(formacion.matriz_falsa)):
+      for j in range(len(formacion.matriz_falsa[i])):
+        indice = math.floor(random.randint(1, 10))
+        formacion.matriz_falsa[i][j] = jugadores[indice]
+    alineaciones_random.append(formacion.matriz_falsa)
+
+  for f in alineaciones_random:
+    print("Código ganadora", hex(id(Generador.compare_alineacion(lista_mejor_formacion, f, formacion))))
+'''
+
+
+  
+  
